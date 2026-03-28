@@ -107,15 +107,15 @@ public class SinglyLinkedList<T> {
     public int countOccurrences(T value) {
         int count = 0;
         SimpleNode<T> current = head;
-        while(current != null) {
-        	if(isSameValue(current.getValue(), value)) {
-        		count++;
-        	}
-        	current = current.getNext();
+        while (current != null) {
+            if (isSameValue(current.getValue(), value)) {
+                count++;
+            }
+            current = current.getNext();
         }
         return count;
     }
-    
+
     /**
      * RETO 2 (intermedio):
      * Limpia completamente la lista y retorna cuántos nodos fueron eliminados.
@@ -137,8 +137,21 @@ public class SinglyLinkedList<T> {
      * @return cantidad de nodos eliminados
      */
     public int clean() {
-        throw new UnsupportedOperationException(
-                "TODO RETO: Implementar clean() en SinglyLinkedList.");
+        int removed = 0;
+        SimpleNode<T> current = head;
+
+        while (current != null) {
+            SimpleNode<T> next = current.getNext();
+            current.setNext(null);
+            current = next;
+            removed++;
+        }
+
+        head = null;
+        tail = null;
+        size = 0;
+
+        return removed;
     }
 
     /**
@@ -164,8 +177,18 @@ public class SinglyLinkedList<T> {
      * - Lista con varios elementos.
      */
     public void reverseInPlace() {
-        throw new UnsupportedOperationException(
-                "TODO RETO: Implementar reverseInPlace() en SinglyLinkedList.");
+        SimpleNode<T> previous = null;
+        SimpleNode<T> current = head;
+        tail = head;
+
+        while (current != null) {
+            SimpleNode<T> next = current.getNext();
+            current.setNext(previous);
+            previous = current;
+            current = next;
+        }
+
+        head = previous;
     }
 
     /**
@@ -188,8 +211,29 @@ public class SinglyLinkedList<T> {
      * @return cantidad de nodos eliminados por duplicados
      */
     public int removeDuplicates() {
-        throw new UnsupportedOperationException(
-                "TODO RETO: Implementar removeDuplicates() en SinglyLinkedList.");
+        int removed = 0;
+        SimpleNode<T> current = head;
+
+        while (current != null) {
+            SimpleNode<T> runner = current;
+
+            while (runner.getNext() != null) {
+                if (isSameValue(current.getValue(), runner.getNext().getValue())) {
+                    if (runner.getNext() == tail) {
+                        tail = runner;
+                    }
+                    runner.setNext(runner.getNext().getNext());
+                    size--;
+                    removed++;
+                } else {
+                    runner = runner.getNext();
+                }
+            }
+
+            current = current.getNext();
+        }
+
+        return removed;
     }
 
     @Override
